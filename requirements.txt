@@ -1,0 +1,5 @@
+Besoin d'une connexion internet.
+Python 3.x
+Modules python :
+	- os
+	- requests
