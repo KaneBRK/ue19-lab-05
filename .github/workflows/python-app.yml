@@ -37,3 +37,11 @@ jobs:
     - name: Run the Python script
       run: |
         python ./age_gender_prediction.py
+    - name: Install Trivy for vulnerability scan
+      run: |
+        curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+        chmod +x trivy
+
+    - name: Scan Python environment for vulnerabilities
+      run: |
+        ./trivy fs --severity HIGH,CRITICAL .
