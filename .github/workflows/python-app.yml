@@ -42,7 +42,7 @@ jobs:
         
     - name: Run Trivy vulnerability scan
       run: |
-        trivy fs --severity CRITICAL --format sarif --output trivy-results.sarif .
+        trivy fs --severity CRITICAL --format sarif --output trivy-results.sarif ./dockerfile
     - name: Run the Python script
       run: |
         python ./age_gender_prediction.py
