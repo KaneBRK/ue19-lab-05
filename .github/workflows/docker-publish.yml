@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-and-scan-and-push:
     runs-on: ubuntu-latest
 
     permissions:
@@ -24,12 +24,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image name (lowercase)
+        run: echo "IMAGE_NAME=$(echo ghcr.io/${{ github.repository }}:latest | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build Docker image
-        run: |
-          IMAGE_NAME=ghcr.io/kanebrk/ue19-lab-05/ue19-lab-05:latest
-          docker build -t $IMAGE_NAME .
+        run: docker build -t $IMAGE_NAME .
+
+      - name: Scan image for vulnerabilities with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.IMAGE_NAME }}
+          format: table
+          exit-code: 0
+          vuln-type: os,library
+          severity: CRITICAL,HIGH,MEDIUM
 
       - name: Push Docker image
-        run: |
-          IMAGE_NAME=ghcr.io/kanebrk/ue19-lab-05/ue19-lab-05:latest
-          docker push $IMAGE_NAME
+        run: docker push $IMAGE_NAME
