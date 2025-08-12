@@ -31,5 +31,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository }}/ue19-lab-05:latest
+          IMAGE_NAME=ghcr.io/kanebrk/ue19-lab-05/ue19-lab-05:latest
           docker push $IMAGE_NAME
